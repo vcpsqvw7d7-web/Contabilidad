@@ -1,88 +1,84 @@
-let clientes = JSON.parse(localStorage.getItem("clientes")) || [];
-let productos = JSON.parse(localStorage.getItem("productos")) || [];
-let ventas = JSON.parse(localStorage.getItem("ventas")) || [];
+let clientes = [];
+let productos = [];
+let ventas = [];
+let gastos = [];
 
-function guardar() {
-  localStorage.setItem("clientes", JSON.stringify(clientes));
-  localStorage.setItem("productos", JSON.stringify(productos));
-  localStorage.setItem("ventas", JSON.stringify(ventas));
-}
-
+// CLIENTES
 function agregarCliente() {
-  const nombre = document.getElementById("clienteNombre").value.trim();
+  const nombre = clienteNombre.value.trim();
   if (!nombre || clientes.includes(nombre)) return;
   clientes.push(nombre);
-  guardar();
-  mostrar();
+  clienteNombre.value = "";
+  actualizarClientes();
 }
 
-function agregarProducto() {
-  const nombre = document.getElementById("productoNombre").value.trim();
-  const precio = Number(document.getElementById("productoPrecio").value);
-  const costo = Number(document.getElementById("productoCosto").value);
-
-  if (!nombre || productos.find(p => p.nombre === nombre)) return;
-
-  productos.push({ nombre, precio, costo });
-  guardar();
-  mostrar();
-}
-
-function agregarVenta() {
-  const cliente = document.getElementById("ventaCliente").value;
-  const productoNombre = document.getElementById("ventaProducto").value;
-  const cantidad = Number(document.getElementById("ventaCantidad").value);
-  const fecha = document.getElementById("ventaFecha").value;
-
-  const producto = productos.find(p => p.nombre === productoNombre);
-  if (!producto || cantidad <= 0) return;
-
-  ventas.push({
-    cliente,
-    producto: producto.nombre,
-    cantidad,
-    ingreso: producto.precio * cantidad,
-    costo: producto.costo * cantidad,
-    fecha
+function actualizarClientes() {
+  listaClientes.innerHTML = "";
+  ventaCliente.innerHTML = "";
+  clientes.forEach(c => {
+    listaClientes.innerHTML += `<li>${c}</li>`;
+    ventaCliente.innerHTML += `<option>${c}</option>`;
   });
-
-  guardar();
-  mostrar();
 }
 
-function mostrar() {
-  document.getElementById("listaClientes").innerHTML =
-    clientes.map(c => `<li>${c}</li>`).join("");
+// PRODUCTOS
+function agregarProducto() {
+  const nombre = productoNombre.value.trim();
+  const precio = Number(productoPrecio.value);
+  if (!nombre || precio <= 0) return;
 
-  document.getElementById("listaProductos").innerHTML =
-    productos.map(p =>
-      `<li>${p.nombre} | Venta $${p.precio} | Costo $${p.costo}</li>`
-    ).join("");
+  let producto = productos.find(p => p.nombre === nombre);
+  if (producto) {
+    producto.precio = precio;
+  } else {
+    productos.push({ nombre, precio });
+  }
 
-  document.getElementById("listaVentas").innerHTML =
-    ventas.map(v =>
-      `<li>
-        ${v.fecha} — ${v.cliente} compró ${v.cantidad} ${v.producto}
-        | Ingreso $${v.ingreso}
-        | Costo $${v.costo}
-        | Utilidad $${v.ingreso - v.costo}
-      </li>`
-    ).join("");
-
-  const totalIngresos = ventas.reduce((s, v) => s + v.ingreso, 0);
-  const totalCostos = ventas.reduce((s, v) => s + v.costo, 0);
-
-  document.getElementById("resumen").innerHTML = `
-    Total ingresos: $${totalIngresos}<br>
-    Total costos: $${totalCostos}<br>
-    <strong>Utilidad: $${totalIngresos - totalCostos}</strong>
-  `;
-
-  document.getElementById("ventaCliente").innerHTML =
-    clientes.map(c => `<option>${c}</option>`).join("");
-
-  document.getElementById("ventaProducto").innerHTML =
-    productos.map(p => `<option>${p.nombre}</option>`).join("");
+  productoNombre.value = "";
+  productoPrecio.value = "";
+  actualizarProductos();
 }
 
-mostrar();
+function actualizarProductos() {
+  listaProductos.innerHTML = "";
+  ventaProducto.innerHTML = "";
+  productos.forEach(p => {
+    listaProductos.innerHTML += `<li>${p.nombre} - $${p.precio}</li>`;
+    ventaProducto.innerHTML += `<option>${p.nombre}</option>`;
+  });
+}
+
+// VENTAS
+function registrarVenta() {
+  ventas.push({
+    cliente: ventaCliente.value,
+    producto: ventaProducto.value,
+    cantidad: Number(ventaCantidad.value),
+    fecha: ventaFecha.value
+  });
+  actualizarVentas();
+}
+
+function actualizarVentas() {
+  listaVentas.innerHTML = "";
+  ventas.forEach(v => {
+    listaVentas.innerHTML += `<li>${v.fecha} - ${v.cliente} - ${v.producto} x${v.cantidad}</li>`;
+  });
+}
+
+// GASTOS
+function registrarGasto() {
+  gastos.push({
+    descripcion: gastoDescripcion.value,
+    monto: Number(gastoMonto.value),
+    fecha: gastoFecha.value
+  });
+  actualizarGastos();
+}
+
+function actualizarGastos() {
+  listaGastos.innerHTML = "";
+  gastos.forEach(g => {
+    listaGastos.innerHTML += `<li>${g.fecha} - ${g.descripcion} $${g.monto}</li>`;
+  });
+}
