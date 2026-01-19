@@ -2,48 +2,47 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Sistema de Contabilidad</title>
+  <title>Contabilidad</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-<h1>📊 Sistema de Contabilidad</h1>
+  <h1>📊 Sistema de Contabilidad</h1>
 
-<section>
-  <h2>Clientes</h2>
-  <input id="clienteNombre" placeholder="Nombre del cliente">
-  <button onclick="agregarCliente()">Agregar cliente</button>
-  <ul id="listaClientes"></ul>
-</section>
+  <section>
+    <h2>Clientes</h2>
+    <input id="clienteNombre" placeholder="Nombre del cliente">
+    <button onclick="agregarCliente()">Agregar cliente</button>
+    <ul id="listaClientes"></ul>
+  </section>
 
-<section>
-  <h2>Productos</h2>
-  <input id="productoNombre" placeholder="Producto">
-  <input id="productoPrecio" type="number" placeholder="Precio de venta">
-  <input id="productoCosto" type="number" placeholder="Costo">
-  <button onclick="agregarProducto()">Agregar producto</button>
-  <ul id="listaProductos"></ul>
-</section>
+  <section>
+    <h2>Productos</h2>
+    <input id="productoNombre" placeholder="Producto">
+    <input id="productoPrecio" type="number" placeholder="Precio">
+    <button onclick="agregarProducto()">Agregar producto</button>
+    <ul id="listaProductos"></ul>
+  </section>
 
-<section>
-  <h2>Registrar venta</h2>
-  <select id="ventaCliente"></select>
-  <select id="ventaProducto"></select>
-  <input id="ventaCantidad" type="number" placeholder="Cantidad">
-  <input id="ventaFecha" type="date">
-  <button onclick="agregarVenta()">Registrar venta</button>
-</section>
+  <section>
+    <h2>Ventas</h2>
+    <select id="ventaCliente"></select>
+    <select id="ventaProducto"></select>
+    <input id="ventaCantidad" type="number" placeholder="Cantidad">
+    <input id="ventaFecha" type="date">
+    <button onclick="registrarVenta()">Registrar venta</button>
+    <ul id="listaVentas"></ul>
+  </section>
 
-<section>
-  <h2>Ventas</h2>
-  <ul id="listaVentas"></ul>
-</section>
+  <section>
+    <h2>Gastos</h2>
+    <input id="gastoDescripcion" placeholder="Descripción">
+    <input id="gastoMonto" type="number" placeholder="Monto">
+    <input id="gastoFecha" type="date">
+    <button onclick="registrarGasto()">Registrar gasto</button>
+    <ul id="listaGastos"></ul>
+  </section>
 
-<section>
-  <h2>Resumen</h2>
-  <p id="resumen"></p>
-</section>
-
-<script src="script.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>
